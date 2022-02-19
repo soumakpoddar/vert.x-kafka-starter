@@ -4,7 +4,9 @@ import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Promise;
 import io.vertx.kafka.client.consumer.KafkaConsumer;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class Consumer extends AbstractVerticle {
 
@@ -21,13 +23,17 @@ public class Consumer extends AbstractVerticle {
     KafkaConsumer<String,String> consumer = KafkaConsumer.create(vertx, config);
 
     consumer.handler(record -> {
-      System.out.println("Processing key = " + record.key() + " ,value = " + record.value() +
-        " ,partition = " + record.partition() + " ,offset = " + record.offset());
+//      System.out.println("Processing key = " + record.key() + " ,value = " + record.value() +
+//        " ,partition = " + record.partition() + " ,offset = " + record.offset());
+      System.out.println(record.value());
     });
 
     //subscribe to a topic...
+    Set<String> topics = new HashSet<>();
+    topics.add("Cricket");
+    topics.add("Football");
     consumer
-      .subscribe("test")
+      .subscribe(topics)
       .onSuccess(v ->
         System.out.println("subscribed")
       ).onFailure(cause ->

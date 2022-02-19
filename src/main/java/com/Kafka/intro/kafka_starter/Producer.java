@@ -19,13 +19,14 @@ public class Producer extends AbstractVerticle {
 
     KafkaProducer<String,String> producer = KafkaProducer.create(vertx,config);
 
-    for (int i = 0; i < 5; i++) {
+    vertx.setPeriodic(1000,id -> {
       // only topic and message value are specified, round-robin on destination partitions
-      KafkaProducerRecord<String, String> record =
-        KafkaProducerRecord.create("test", "message_" + i);
+      KafkaProducerRecord<String, String> CricketRecord = KafkaProducerRecord.create("Cricket", "Kohli made 100!!");
+      KafkaProducerRecord<String,String> FootballRecord = KafkaProducerRecord.create("Football","Messi scored a goal!!");
 
-      producer.write(record);
-    }
+      producer.write(CricketRecord);
+      producer.write(FootballRecord);
+    });
 
 //    producer
 //      .close()
